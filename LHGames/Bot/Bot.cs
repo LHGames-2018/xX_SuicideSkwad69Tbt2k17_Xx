@@ -29,7 +29,7 @@ namespace LHGames.Bot
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
             MovementActions movement = new MovementActions();
-            PlayerActions actions = new PlayerActions();
+            PlayerActions actions = new PlayerActions(map);
             CollectActions collection = new CollectActions();
 
             // TODO: Implement your AI here.
@@ -82,13 +82,23 @@ namespace LHGames.Bot
                 }
             }
 
-            public PlayerActions()
+            private Map gameMap;
+
+            public Map GameMap
+            {
+                get { return gameMap; }
+                set { gameMap = value; }
+            }
+
+
+            public PlayerActions(Map map)
             {
                 Movement = new MovementActions();
+                GameMap = map;
             }
 
             //Find the distance to nearest enemy
-            public void MeleeAttack(IEnumerable<IPlayer> visiblePlayers)
+            public void FindEnemyAndMove(IEnumerable<IPlayer> visiblePlayers)
             {
                 Point target = new Point(0, 0);
                 double distance = int.MaxValue;
@@ -111,6 +121,11 @@ namespace LHGames.Bot
                     Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
                     AIHelper.CreateMeleeAttackAction(direction);
                 }
+            }
+
+            public void Attack(Point direciton)
+            {
+
             }
         }
 
