@@ -34,6 +34,8 @@ namespace LHGames.Bot
             PlayerActions actions = new PlayerActions(map);
             Point direction = new Point(0, 0);
 
+            presentState = (int)ETATS.RECHERCHER;
+
             // Scanning the map
             foreach(Tile t in map.GetVisibleTiles())
             {
@@ -89,7 +91,7 @@ namespace LHGames.Bot
                     //actions.Steal();
                     break;
                 case (int)ETATS.RECHERCHER:
-                    //actions.Rechercher(); // plus rien sur la map visible
+                    action = actions.Rechercher(); // plus rien sur la map visible
                     break;
                 case (int)ETATS.RETOURNER_MAISON:
                     //CollectActions.RetournerMaison(map);
@@ -119,13 +121,21 @@ namespace LHGames.Bot
         /// </summary>
         public static class MovementActions
         {
+            //public MovementActions(Map map)
+            //{
+            //    MapInstance = map;
+            //}
+
+            //Map MapInstance { get; set; }
+
             /// <summary>
             /// Used by the other classes to specify a point where we need to move
-            /// ie: the player wan't to move to a point positioned 1 right & 3 up, point should be [1, -3]
+            /// ie: the player wan't to move to a point positioned 1 right, 3 up, MoveTo(new Point(player.X + 1, Player.Y - 3));
             /// </summary>
-            /// <param name="point"></param>
+            /// <param name="point">The point where the player wants to end up</param>
             public static string MoveTo(Map map, Point point)
             {
+                //List<Point> path = FindPath(map, point);
                 return FindEasyPath(map, point);
             }
 
@@ -135,266 +145,142 @@ namespace LHGames.Bot
                      moveRight = false,
                      moveUp = false,
                      moveDown = false;
+                return AIHelper.CreateMoveAction(new Point(-1, 0));
+                int nbMovesX = point.X;
+                int nbMovesY = point.Y;
 
-                if (point.X > 0)
+                if(nbMovesX > 0)
                 {
-                    if(map.GetTileAt(PlayerInfo.Position.X + 1, PlayerInfo.Position.Y) != TileContent.Lava)
-                    {
-                        moveRight = true;
-                    }
-                    else
-                    {
-                        if(map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y - 1) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else if(map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y + 1) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                    }
+                    moveRight = true;
                 }
-                else if (point.X < 0)
+                else if(nbMovesX < 0)
                 {
-                    if (map.GetTileAt(PlayerInfo.Position.X - 1, PlayerInfo.Position.Y) != TileContent.Lava)
-                    {
-                        moveLeft = true;
-                    }
-                    else
-                    {
-                        if (map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y - 1) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else if (map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y + 1) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                    }
+                    moveLeft = true;
                 }
-
-                if (point.Y > 0)
+                if(nbMovesY > 0)
                 {
-                    if (map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y + 1) != TileContent.Lava)
-                    {
-                        moveDown = true;
-                    }
-                    else
-                    {
-                        if (map.GetTileAt(PlayerInfo.Position.X - 1, PlayerInfo.Position.Y) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else if (map.GetTileAt(PlayerInfo.Position.X + 1, PlayerInfo.Position.Y) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                    }
+                    moveDown = true;
                 }
-                else if (point.Y < 0)
+                else if(nbMovesY < 0)
                 {
-                    if (map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y - 1) != TileContent.Lava)
-                    {
-                        moveUp = true;
-                    }
-                    else
-                    {
-                        if (map.GetTileAt(PlayerInfo.Position.X - 1, PlayerInfo.Position.Y) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else if (map.GetTileAt(PlayerInfo.Position.X + 1, PlayerInfo.Position.Y) != TileContent.Lava)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                    }
+                    moveUp = true;
                 }
 
                 Random random = new Random(DateTime.Now.Millisecond);
-                int nbRandom = random.Next() % 4;
-                if (nbRandom == 0)
+                if(random.Next() % 2 == 0)
                 {
-                    #region option1
-                    if(random.Next() % 2 == 0)
+                    if (moveLeft)
                     {
-                        if (moveLeft)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else if (moveRight)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                        else if (moveUp)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
+                       return AIHelper.CreateMoveAction(new Point(-1, 0));
                     }
-                    #endregion
-                    #region option2
-                    else
+                    else if(moveRight)
                     {
-                        if (moveUp)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else if (moveDown)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                        else if (moveLeft)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                        
+                       return AIHelper.CreateMoveAction(new Point(1, 0));
                     }
-                    #endregion             
-                }
-                else if(nbRandom == 1)
-                {
-                    #region option1
-                    if (random.Next() % 2 == 0)
+                    else if(moveUp)
                     {
-                        if (moveDown)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                        else if (moveLeft)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else if (moveRight)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
+                        return AIHelper.CreateMoveAction(new Point(0, -1));
                     }
-                    #endregion
-                    #region option2
-                    else
+                    else //(moveDown)
                     {
-                        if (moveRight)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                        else if (moveUp)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else if (moveDown)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
+                        return AIHelper.CreateMoveAction(new Point(0, 1));
                     }
-                    #endregion
-                }
-                else if (nbRandom == 2)
-                {
-                    #region option1
-                    if (random.Next() % 2 == 0)
-                    {
-                        if (moveUp)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else if (moveDown)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                        else if (moveLeft)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                    }
-                    #endregion
-                    #region option2
-                    else
-                    {
-                        if (moveLeft)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else if (moveRight)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                        else if (moveUp)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                    }
-                    #endregion
                 }
                 else
                 {
-                    #region option1
-                    if (random.Next() % 2 == 0)
+                    if (moveUp)
                     {
-                        if (moveDown)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                        else if (moveLeft)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
-                        else if (moveRight)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        
+                        return AIHelper.CreateMoveAction(new Point(0, -1));
                     }
-                    #endregion
-                    #region option2
-                    else
+                    else if (moveDown)
                     {
-                        if (moveRight)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(1, 0));
-                        }
-                        else if (moveUp)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, -1));
-                        }
-                        else if (moveDown)
-                        {
-                            return AIHelper.CreateMoveAction(new Point(0, 1));
-                        }
-                        else
-                        {
-                            return AIHelper.CreateMoveAction(new Point(-1, 0));
-                        }
+                        return AIHelper.CreateMoveAction(new Point(0, 1));
                     }
+                    else if (moveLeft)
+                    {
+                        return AIHelper.CreateMoveAction(new Point(-1, 0));
+                    }
+                    else //(moveRight)
+                    {
+                        return AIHelper.CreateMoveAction(new Point(1, 0));
+                    }
+                }
+            }
 
-                    
-                    #endregion
+            /// <summary>
+            /// Will create a table containing multiple MoveActions
+            /// Every MoveActions will be a direction point, 
+            /// ie: [1, 0], [1, 0], [0,-1] would represent the (right, right, up) path
+            /// </summary>
+            /// <param name="point"></param>
+            /// <returns></returns>
+            private static List<Point> FindPath(Map map, Point point)
+            {
+                // this list will contain all the moves to make to ge to the desired point
+                List<Point> path = new List<Point> { };
+                List<Point> emptyPoints = new List<Point> { }; // this list contains all the available points for moves
+                Point tempPosition;
+
+                foreach (Tile t in map.GetVisibleTiles())
+                {
+                    if (t.TileType != TileContent.Empty)
+                    {
+                        emptyPoints.Add(t.Position);
+                    }
+                }
+
+                //A*
+                double flyingDistance = Math.Sqrt(Math.Pow((PlayerInfo.Position.X - point.X), 2) + Math.Pow((PlayerInfo.Position.Y - point.Y), 2));
+                int tileUnitsDistance = (PlayerInfo.Position.X - point.X) + (PlayerInfo.Position.Y - point.Y);
+
+                do
+                {
+                    tempPosition = new Point();
+                } while (tempPosition != point);
+
+                return path;
+            }
+
+            private static void AStarMoveUp()
+            {
+
+            }
+
+            private static void AStarMoveDown()
+            {
+
+            }
+            private static void AStarMoveLeft()
+            {
+
+            }
+            private static void AStarMoveRight()
+            {
+
+            }
+
+            /// <summary>
+            /// When called, the player will move in a specific direction
+            /// Input must be between [-1, -1] and [1, 1], and can only have 1 parameter != 0
+            /// </summary>
+            /// <param name="point">Move in the x axis. Left = [-1, 0], Right = [1, 0]
+            ///                     Move in the y axis. Top = [0, -1], Down = [0, 1] </param>
+            private static string Move(Point point)
+            {
+                if (point.X != 0 ^ point.Y != 0)
+                {
+                    if (point.X != 0) // move in x axis
+                    {
+                        return AIHelper.CreateMoveAction(new Point(point.X, 0));
+                    }
+                    else // move in y axis
+                    {
+                        return AIHelper.CreateMoveAction(new Point(0, point.Y));
+                    }
+                }
+                else // Called if the user sent inconsistent entrie values
+                {
+                    return AIHelper.CreateMoveAction(new Point(0, 0)); // Won't move
                 }
             }
         }
@@ -412,7 +298,7 @@ namespace LHGames.Bot
                 set { gameMap = value; }
             }
 
-
+            //swaq
             public PlayerActions(Map map)
             {           
                 GameMap = map;
@@ -472,6 +358,27 @@ namespace LHGames.Bot
                 {
                     Attack(direction);
                 }
+            }
+
+            public string Rechercher()
+            {
+                if (GameMap.GetTileAt(PlayerInfo.Position.X + 1, PlayerInfo.Position.Y) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(1, 0));
+                }
+                else if (GameMap.GetTileAt(PlayerInfo.Position.X - 1, PlayerInfo.Position.Y) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(-1, 0));
+                }
+                else if (GameMap.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y + 1) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(0, 1));
+                }
+                else if (GameMap.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y - 1) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(0, -1));
+                }
+                return MovementActions.MoveTo(GameMap, PlayerInfo.HouseLocation - PlayerInfo.Position);
             }
 
             /// <summary>
