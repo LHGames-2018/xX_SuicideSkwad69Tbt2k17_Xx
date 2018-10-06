@@ -31,7 +31,7 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
-            MovementActions movement = new MovementActions();
+            MovementActions movement = new MovementActions(map);
             PlayerActions actions = new PlayerActions();
             CollectActions collection = new CollectActions();
 
@@ -102,21 +102,23 @@ namespace LHGames.Bot
         /// <summary>
         /// Class used to define the path to use
         /// </summary>
-        class MovementActions
+        public static class MovementActions
         {
-            public MovementActions()
-            {
+            //public MovementActions(Map map)
+            //{
+            //    MapInstance = map;
+            //}
 
-            }
+            //Map MapInstance { get; set; }
 
             /// <summary>
             /// Used by the other classes to specify a point where we need to move
-            /// ie: the player wan't to move to a point positioned 1 right, 3 up, MoveTo(new Point(1, -3));
+            /// ie: the player wan't to move to a point positioned 1 right, 3 up, MoveTo(new Point(player.X + 1, Player.Y - 3));
             /// </summary>
             /// <param name="point">The point where the player wants to end up</param>
-            public void MoveTo(Point point)
+            public static void MoveTo(Map map, Point point)
             {
-                List<Point> path = FindPath(point);
+                List<Point> path = FindPath(map, point);
             }
 
             /// <summary>
@@ -126,13 +128,49 @@ namespace LHGames.Bot
             /// </summary>
             /// <param name="point"></param>
             /// <returns></returns>
-            private List<Point> FindPath(Point point)
+            private static List<Point> FindPath(Map map, Point point)
             {
-                List<Point> path = new List<Point> { }; 
+                // this list will contain all the moves to make to ge to the desired point
+                List<Point> path = new List<Point> { };
+                List<Point> emptyPoints = new List<Point> { }; // this list contains all the available points for moves
+                Point tempPosition;
+               
+                foreach (Tile t in map.GetVisibleTiles())
+                {
+                    if (t.TileType != TileContent.Empty)
+                    {
+                        emptyPoints.Add(t.Position);
+                    }
+                }
 
+                //A*
+                double flyingDistance = Math.Sqrt(Math.Pow((PlayerInfo.Position.X - point.X), 2) + Math.Pow((PlayerInfo.Position.Y - point.Y), 2));
+                int tileUnitsDistance = (PlayerInfo.Position.X - point.X) + (PlayerInfo.Position.Y - point.Y);
 
+                do
+                {
+                    tempPosition = new Point();
+                } while (tempPosition != point);
 
                 return path;
+            }
+
+            private static void AStarMoveUp()
+            {
+
+            }
+
+            private static void AStarMoveDown()
+            {
+
+            }
+            private static void AStarMoveLeft()
+            {
+
+            }
+            private static void AStarMoveRight()
+            {
+
             }
 
             /// <summary>
@@ -141,7 +179,7 @@ namespace LHGames.Bot
             /// </summary>
             /// <param name="point">Move in the x axis. Left = [-1, 0], Right = [1, 0]
             ///                     Move in the y axis. Top = [0, -1], Down = [0, 1] </param>
-            private void Move(Point point)
+            private static void Move(Point point)
             {
                 if(point.X != 0 ^ point.Y != 0)
                 {
