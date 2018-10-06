@@ -361,6 +361,22 @@ namespace LHGames.Bot
 
             public string Rechercher()
             {
+                if (GameMap.GetTileAt(PlayerInfo.Position.X + 1, PlayerInfo.Position.Y) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(1, 0));
+                }
+                else if (GameMap.GetTileAt(PlayerInfo.Position.X - 1, PlayerInfo.Position.Y) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(-1, 0));
+                }
+                else if (GameMap.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y + 1) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(0, 1));
+                }
+                else if (GameMap.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y - 1) == TileContent.Wall)
+                {
+                    return AIHelper.CreateMeleeAttackAction(new Point(0, -1));
+                }
                 return MovementActions.MoveTo(GameMap, PlayerInfo.HouseLocation - PlayerInfo.Position);
             }
 
