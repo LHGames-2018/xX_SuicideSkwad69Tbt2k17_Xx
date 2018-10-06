@@ -321,17 +321,52 @@ namespace LHGames.Bot
         /// </summary>
         class CollectActions
         {
+            private Map gameMap;
+
+            public Map GameMap
+            {
+                get { return gameMap; }
+                set { gameMap = value; }
+            }
+
+
             public CollectActions(Map m)
             {
+                GameMap = m;
+            }
+
+            /// <summary>
+            /// Move to rock and if close enough, collect
+            /// </summary>
+            public void MoveToRock()
+            {
                 Point position = new Point(2000, 2000);
-                foreach (Tile t in m.GetVisibleTiles()) {
-                    if (t.TileType == TileContent.Resource) {
-                        if ( Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2)) {
-                            position = new Point(t.Position.X, t.Position.Y);
-                        } 
-                    }  
+                if (PlayerInfo.CarriedResources == PlayerInfo.CarryingCapacity)
+                {
+                    MovementActions.MoveTo(GameMap, PlayerInfo.HouseLocation);
                 }
-                MovementActions.MoveTo(m, position);
+                else
+                {
+                    foreach (Tile t in GameMap.GetVisibleTiles())
+                    {
+                        if (t.TileType == TileContent.Resource)
+                        {
+                            if (Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2))
+                            {
+                                position = new Point(t.Position.X, t.Position.Y);
+                            }
+                        }
+                    }
+                    double distance = Math.Sqrt(Math.Pow((position.X - PlayerInfo.Position.X), 2) + (Math.Pow((position.Y - PlayerInfo.Position.Y), 2)));
+                    if (distance > 1)
+                    {
+                        MovementActions.MoveTo(GameMap, position);
+                    }
+                    else
+                    {
+                        AIHelper.CreateCollectAction(position - PlayerInfo.Position);
+                    }
+                }
             }
         }
     }
