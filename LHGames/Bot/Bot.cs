@@ -30,7 +30,7 @@ namespace LHGames.Bot
         {
             MovementActions movement = new MovementActions();
             PlayerActions actions = new PlayerActions();
-            CollectActions collection = new CollectActions();
+            CollectActions collection = new CollectActions(map);
 
             // TODO: Implement your AI here.
             if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
@@ -82,8 +82,12 @@ namespace LHGames.Bot
         /// </summary>
         class CollectActions
         {
-            public CollectActions()
+            public CollectActions(Map m)
             {
+                Map map = m;
+                foreach (Tile t in m.VisibleDistance) {
+                    
+                }
 
             }
         }
