@@ -7,7 +7,7 @@ namespace LHGames.Bot
 {
     internal class Bot
     {
-        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
+        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER, RETOURNER_MAISON };
         int presentState = (int)ETATS.COLLECTER;
         static IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
@@ -59,6 +59,10 @@ namespace LHGames.Bot
                     presentState = (int)ETATS.RECHERCHER;
                 }
             }
+            if(PlayerInfo.CarriedResources >= 1000) // initial capacity is 1000
+            {
+                presentState = (int)ETATS.RETOURNER_MAISON;
+            }
 
             switch (presentState)
             {
@@ -79,6 +83,9 @@ namespace LHGames.Bot
                     break;
                 case (int)ETATS.RECHERCHER:
                     //actions.Rechercher(); // plus rien sur la map visible
+                    break;
+                case (int)ETATS.RETOURNER_MAISON:
+                    //CollectActions.RetournerMaison(map);
                     break;
             }
 
@@ -214,15 +221,12 @@ namespace LHGames.Bot
 
 
             public PlayerActions(Map map)
-            {
+            {           
                 GameMap = map;
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="visiblePlayers"></param>
-            public void MoveToEnemyAndAttack(IEnumerable<IPlayer> visiblePlayers)
+            //Find the distance to nearest enemy
+            public void MeleeAttack(IEnumerable<IPlayer> visiblePlayers)
             {
                 Point target = new Point(0, 0);
                 double distance = int.MaxValue;
@@ -317,8 +321,17 @@ namespace LHGames.Bot
         /// </summary>
         class CollectActions
         {
-            public CollectActions()
+            public CollectActions(Map m)
             {
+                Point position = new Point(2000, 2000);
+                foreach (Tile t in m.GetVisibleTiles()) {
+                    if (t.TileType == TileContent.Resource) {
+                        if ( Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2)) {
+                            position = new Point(t.Position.X, t.Position.Y);
+                        } 
+                    }  
+                }
+                MovementActions.MoveTo(m, position);
             }
         }
     }
