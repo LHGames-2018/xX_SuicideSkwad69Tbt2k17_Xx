@@ -8,7 +8,11 @@ namespace LHGames.Bot
     internal class Bot
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
+=======
+        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER, RETOURNER_MAISON };
+>>>>>>> 2bf204b4f9bfbdfa78a93612078f7b8c66496150
         int presentState = (int)ETATS.COLLECTER;
 =======
 >>>>>>> 4474efcaae4cb981cf2f633e947233735a378b85
@@ -33,9 +37,13 @@ namespace LHGames.Bot
         /// <param name="visiblePlayers">Players that are visible to your bot.</param>
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
+<<<<<<< HEAD
         {
             MovementActions movement = new MovementActions();
 <<<<<<< HEAD
+=======
+        {           
+>>>>>>> 2bf204b4f9bfbdfa78a93612078f7b8c66496150
             PlayerActions actions = new PlayerActions(map);
             Point direction = new Point(0, 0);
 
@@ -64,6 +72,10 @@ namespace LHGames.Bot
                     presentState = (int)ETATS.RECHERCHER;
                 }
             }
+            if(PlayerInfo.CarriedResources >= 1000) // initial capacity is 1000
+            {
+                presentState = (int)ETATS.RETOURNER_MAISON;
+            }
 
             switch (presentState)
             {
@@ -84,6 +96,9 @@ namespace LHGames.Bot
                     break;
                 case (int)ETATS.RECHERCHER:
                     //actions.Rechercher(); // plus rien sur la map visible
+                    break;
+                case (int)ETATS.RETOURNER_MAISON:
+                    //CollectActions.RetournerMaison(map);
                     break;
             }
 =======
@@ -213,6 +228,7 @@ namespace LHGames.Bot
         /// </summary>
         class PlayerActions
         {
+<<<<<<< HEAD
             private MovementActions movement;
 
             public MovementActions Movement
@@ -225,6 +241,8 @@ namespace LHGames.Bot
                 }
             }
 
+=======
+>>>>>>> 2bf204b4f9bfbdfa78a93612078f7b8c66496150
             private Map gameMap;
 
             public Map GameMap
@@ -235,8 +253,7 @@ namespace LHGames.Bot
 
 
             public PlayerActions(Map map)
-            {
-                Movement = new MovementActions();
+            {               
                 GameMap = map;
             }
 
@@ -283,7 +300,11 @@ namespace LHGames.Bot
                 {
                     Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
 <<<<<<< HEAD
+<<<<<<< HEAD
                     Defend(visiblePlayers, direction);
+=======
+                    Defend(direction);
+>>>>>>> 2bf204b4f9bfbdfa78a93612078f7b8c66496150
                 }
             }
 
