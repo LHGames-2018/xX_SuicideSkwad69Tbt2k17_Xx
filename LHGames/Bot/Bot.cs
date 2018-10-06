@@ -297,7 +297,7 @@ namespace LHGames.Bot
                 set { gameMap = value; }
             }
 
-
+            //swaq
             public PlayerActions(Map map)
             {           
                 GameMap = map;
