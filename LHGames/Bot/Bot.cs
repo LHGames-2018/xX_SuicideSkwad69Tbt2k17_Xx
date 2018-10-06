@@ -129,7 +129,57 @@ namespace LHGames.Bot
             /// <param name="point">The point where the player wants to end up</param>
             public static void MoveTo(Map map, Point point)
             {
-                List<Point> path = FindPath(map, point);
+                //List<Point> path = FindPath(map, point);
+                FindEasyPath(map, point);
+            }
+
+            private static void FindEasyPath(Map map, Point point)
+            {
+                bool moveLeft = false,
+                     moveRight = false,
+                     moveUp = false,
+                     moveDown = false;
+
+                int nbMovesX = point.X - PlayerInfo.Position.X;
+                int nbMovesY = point.Y - PlayerInfo.Position.Y;
+
+                if(nbMovesX > 0)
+                {
+                    moveRight = true;
+                }
+                else if(nbMovesX < 0)
+                {
+                    moveLeft = true;
+                }
+                if(nbMovesY > 0)
+                {
+                    moveDown = true;
+                }
+                else if(nbMovesY < 0)
+                {
+                    moveUp = true;
+                }
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                if(random.Next() % 2 == 0)
+                {
+                    if (moveLeft)
+                    {
+                        AIHelper.CreateMoveAction(new Point(-1, 0));
+                    }
+                    else if(moveRight)
+                    {
+                        AIHelper.CreateMoveAction(new Point(1, 0));
+                    }
+                    else if(moveUp)
+                    {
+                        AIHelper.CreateMoveAction(new Point(0, -1));
+                    }
+                    else if (moveDown)
+                    {
+                        AIHelper.CreateMoveAction(new Point(0, 1));
+                    }
+                }
             }
 
             /// <summary>
