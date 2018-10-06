@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using LHGames.Helper;
+using System.Linq;
 
 namespace LHGames.Bot
 {
     internal class Bot
     {
-        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
+        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER, RETOURNER_MAISON };
         int presentState = (int)ETATS.COLLECTER;
         static IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
@@ -30,7 +31,6 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
-            MovementActions movement = new MovementActions();
             PlayerActions actions = new PlayerActions(map);
             Point direction = new Point(0, 0);
 
@@ -59,6 +59,10 @@ namespace LHGames.Bot
                     presentState = (int)ETATS.RECHERCHER;
                 }
             }
+            if(PlayerInfo.CarriedResources >= 1000) // initial capacity is 1000
+            {
+                presentState = (int)ETATS.RETOURNER_MAISON;
+            }
 
             switch (presentState)
             {
@@ -79,6 +83,9 @@ namespace LHGames.Bot
                     break;
                 case (int)ETATS.RECHERCHER:
                     //actions.Rechercher(); // plus rien sur la map visible
+                    break;
+                case (int)ETATS.RETOURNER_MAISON:
+                    //CollectActions.RetournerMaison(map);
                     break;
             }
 
@@ -254,17 +261,6 @@ namespace LHGames.Bot
         /// </summary>
         class PlayerActions
         {
-            private MovementActions movement;
-
-            public MovementActions Movement
-            {
-                get => movement;
-                set
-                {
-                    movement = value;
-                }
-            }
-
             private Map gameMap;
 
             public Map GameMap
@@ -275,16 +271,12 @@ namespace LHGames.Bot
 
 
             public PlayerActions(Map map)
-            {
-                Movement = new MovementActions();
+            {           
                 GameMap = map;
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="visiblePlayers"></param>
-            public void MoveToEnemyAndAttack(IEnumerable<IPlayer> visiblePlayers)
+            //Find the distance to nearest enemy
+            public void MeleeAttack(IEnumerable<IPlayer> visiblePlayers)
             {
                 Point target = new Point(0, 0);
                 double distance = int.MaxValue;
@@ -305,7 +297,7 @@ namespace LHGames.Bot
                 else
                 {
                     Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
-                    Attack(direction);
+                    Defend(direction);
                 }
             }
 
@@ -316,11 +308,27 @@ namespace LHGames.Bot
             public void Attack(Point direction)
             {
                 AIHelper.CreateMeleeAttackAction(direction);
+
             }
 
-            public void Defend()
+            /// <summary>
+            /// Defend from enemies
+            /// </summary>
+            /// <param name="direction"></param>
+            public void Defend(Point direction = null)
             {
-
+                double criticalHp = PlayerInfo.MaxHealth * 0.3;
+                if (PlayerInfo.Health <= criticalHp)
+                {
+                    if (PlayerInfo.CarriedItems.Count(x => x == PurchasableItem.HealthPotion) > 0)
+                    {
+                        AIHelper.CreateHealAction();
+                    }
+                }
+                else
+                {
+                    Attack(direction);
+                }
             }
 
             /// <summary>
@@ -363,8 +371,17 @@ namespace LHGames.Bot
         /// </summary>
         class CollectActions
         {
-            public CollectActions()
+            public CollectActions(Map m)
             {
+                Point position = new Point(2000, 2000);
+                foreach (Tile t in m.GetVisibleTiles()) {
+                    if (t.TileType == TileContent.Resource) {
+                        if ( Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2)) {
+                            position = new Point(t.Position.X, t.Position.Y);
+                        } 
+                    }  
+                }
+                MovementActions.MoveTo(m, position);
             }
         }
     }
