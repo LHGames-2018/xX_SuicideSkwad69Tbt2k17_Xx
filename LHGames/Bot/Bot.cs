@@ -31,7 +31,6 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
-            MovementActions movement = new MovementActions();
             PlayerActions actions = new PlayerActions(map);
             Point direction = new Point(0, 0);
 
@@ -205,17 +204,6 @@ namespace LHGames.Bot
         /// </summary>
         class PlayerActions
         {
-            private MovementActions movement;
-
-            public MovementActions Movement
-            {
-                get => movement;
-                set
-                {
-                    movement = value;
-                }
-            }
-
             private Map gameMap;
 
             public Map GameMap
@@ -227,7 +215,6 @@ namespace LHGames.Bot
 
             public PlayerActions(Map map)
             {
-                Movement = new MovementActions();
                 GameMap = map;
             }
 
@@ -256,7 +243,7 @@ namespace LHGames.Bot
                 else
                 {
                     Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
-                    Defend(visiblePlayers, direction);
+                    Defend(direction);
                 }
             }
 
