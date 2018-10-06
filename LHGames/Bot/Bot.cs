@@ -6,6 +6,9 @@ namespace LHGames.Bot
 {
     internal class Bot
     {
+        enum ETATS { COLLECTER, DEPLACER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
+        int presentState = (int)ETATS.COLLECTER;
+        int previousState;
         internal IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
 
@@ -19,7 +22,7 @@ namespace LHGames.Bot
         {
             PlayerInfo = playerInfo;
         }
-
+    
         /// <summary>
         /// Implement your bot here.
         /// </summary>
@@ -33,9 +36,55 @@ namespace LHGames.Bot
             CollectActions collection = new CollectActions();
 
             // TODO: Implement your AI here.
+            foreach(Tile t in map.GetVisibleTiles())
+            {
+                if(t.TileType == TileContent.Player)
+                {
+                    if(PlayerInfo.Position.X + 1 == t.Position.X || PlayerInfo.Position.X - 1 == t.Position.X ||
+                       PlayerInfo.Position.Y + 1 == t.Position.Y || PlayerInfo.Position.Y - 1 == t.Position.Y)
+                    {
+                        presentState = (int)ETATS.DEFENDRE; // si l'ennemi est à côté de nous
+                    }
+                    else // si l'ennemi n'est pas à côté
+                    {
+                        presentState = (int)ETATS.ATTAQUER; 
+                    }
+                }
+                else if (t.TileType == TileContent.Resource)
+                {
+                    presentState = (int)ETATS.COLLECTER;
+                }
+                else // Si on ne voit rien de pertinent
+                {
+                    presentState = (int)ETATS.RECHERCHER;
+                }
+            }
+
             if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
             {
                 _currentDirection *= -1;
+            }
+
+            switch (presentState)
+            {
+                case (int)ETATS.COLLECTER:
+                    //collection.Collecter();
+                    break;
+                case (int)ETATS.DEPLACER:
+                    //movement.Deplacer();
+                    break;
+                case (int)ETATS.ATTAQUER:
+                    //actions.Attaquer();
+                    break;
+                case (int)ETATS.DEFENDRE:
+                    //actions.Defendre();
+                    break;
+                case (int)ETATS.UPGRADE:
+                    //actions.Upgrade();
+                    break;
+                case (int)ETATS.VOLER:
+                    //actions.Steal();
+                    break;
             }
 
             var data = StorageHelper.Read<TestClass>("Test");
