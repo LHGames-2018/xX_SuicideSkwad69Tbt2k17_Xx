@@ -405,7 +405,7 @@ namespace LHGames.Bot
                 Point position = new Point(2000, 2000);
                 if (PlayerInfo.CarriedResources == PlayerInfo.CarryingCapacity)
                 {
-                    return MovementActions.MoveTo(map, PlayerInfo.HouseLocation);
+                    return MovementActions.MoveTo(map, PlayerInfo.HouseLocation - PlayerInfo.Position);
                 }
                 else
                 {
