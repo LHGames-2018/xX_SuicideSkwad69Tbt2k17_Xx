@@ -61,18 +61,29 @@ namespace LHGames.Bot
             }
 
             /// <summary>
-            /// Used by the other classes to 
+            /// Used by the other classes to specify a point where we need to move
+            /// ie: the player wan't to move to a point positioned 1 right, 3 up, MoveTo(new Point(1, -3));
             /// </summary>
-            /// <param name="point"></param>
-            public MoveTo(Point point)
+            /// <param name="point">The point where the player wants to end up</param>
+            public void MoveTo(Point point)
             {
-
+                List<Point> path = FindPath(point);
             }
 
-
-            private Point[] FindPath()
+            /// <summary>
+            /// Will create a table containing multiple MoveActions
+            /// Every MoveActions will be a direction point, 
+            /// ie: [1, 0], [1, 0], [0,-1] would represent the (right, right, up) path
+            /// </summary>
+            /// <param name="point"></param>
+            /// <returns></returns>
+            private List<Point> FindPath(Point point)
             {
+                List<Point> path = new List<Point> { }; 
 
+
+
+                return path;
             }
 
             /// <summary>
