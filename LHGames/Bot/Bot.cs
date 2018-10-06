@@ -145,7 +145,6 @@ namespace LHGames.Bot
                 GameMap = map;
             }
 
-            
             /// <summary>
             /// 
             /// </summary>
