@@ -9,7 +9,7 @@ namespace LHGames.Bot
         enum ETATS { COLLECTER, DEPLACER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
         int presentState = (int)ETATS.COLLECTER;
         int previousState;
-        internal IPlayer PlayerInfo { get; set; }
+        static IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
 
         internal Bot() { }
@@ -120,9 +120,46 @@ namespace LHGames.Bot
         /// </summary>
         class PlayerActions
         {
+            private MovementActions movement;
+
+            public MovementActions Movement
+            {
+                get => movement;
+                set
+                {
+                    movement = value;
+                }
+            }
+
             public PlayerActions()
             {
+                Movement = new MovementActions();
+            }
 
+            //Find the distance to nearest enemy
+            public void MeleeAttack(IEnumerable<IPlayer> visiblePlayers)
+            {
+                Point target = new Point(0, 0);
+                double distance = int.MaxValue;
+                foreach(var p in visiblePlayers)
+                {
+                    Point temp = p.Position;
+                    double distanceTemp = Math.Sqrt(Math.Pow((PlayerInfo.Position.X - temp.X), 2) + Math.Pow((PlayerInfo.Position.Y - temp.Y), 2));
+                    if (distanceTemp < distance)
+                    {
+                        target = temp;
+                        distance = distanceTemp;
+                    }
+                }
+                if (distance > 1)
+                {
+                    //movement.Deplacer(target);
+                }
+                else
+                {
+                    Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
+                    AIHelper.CreateMeleeAttackAction(direction);
+                }
             }
         }
 
@@ -133,7 +170,6 @@ namespace LHGames.Bot
         {
             public CollectActions()
             {
-
             }
         }
     }
