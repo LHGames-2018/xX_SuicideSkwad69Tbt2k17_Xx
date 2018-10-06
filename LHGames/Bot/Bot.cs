@@ -6,7 +6,7 @@ namespace LHGames.Bot
 {
     internal class Bot
     {
-        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
+        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER, RETOURNER_MAISON };
         int presentState = (int)ETATS.COLLECTER;
         static IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
@@ -59,6 +59,10 @@ namespace LHGames.Bot
                     presentState = (int)ETATS.RECHERCHER;
                 }
             }
+            if(PlayerInfo.CarriedResources >= 1000) // initial capacity is 1000
+            {
+                presentState = (int)ETATS.RETOURNER_MAISON;
+            }
 
             switch (presentState)
             {
@@ -79,6 +83,9 @@ namespace LHGames.Bot
                     break;
                 case (int)ETATS.RECHERCHER:
                     //actions.Rechercher(); // plus rien sur la map visible
+                    break;
+                case (int)ETATS.RETOURNER_MAISON:
+                    //CollectActions.RetournerMaison(map);
                     break;
             }
 
