@@ -37,20 +37,20 @@ namespace LHGames.Bot
             // Scanning the map
             foreach(Tile t in map.GetVisibleTiles())
             {
-                if(t.TileType == TileContent.Player) // 1e priorite : attaquer et defendre
-                {
-                    if(PlayerInfo.Position.X + 1 == t.Position.X || PlayerInfo.Position.X - 1 == t.Position.X ||
-                       PlayerInfo.Position.Y + 1 == t.Position.Y || PlayerInfo.Position.Y - 1 == t.Position.Y)
-                    {
-                        presentState = (int)ETATS.DEFENDRE; // si l'ennemi est à côté de nous
-                        direction = new Point(t.Position.X - PlayerInfo.Position.X, t.Position.Y - PlayerInfo.Position.Y);
-                    }
-                    else // si l'ennemi n'est pas à côté
-                    {
-                        presentState = (int)ETATS.ATTAQUER; 
-                    }
-                }
-                else if (t.TileType == TileContent.Resource) // 2e priorite : collecter des ressources
+                //if(t.TileType == TileContent.Player) // 1e priorite : attaquer et defendre
+                //{
+                //    if(PlayerInfo.Position.X + 1 == t.Position.X || PlayerInfo.Position.X - 1 == t.Position.X ||
+                //       PlayerInfo.Position.Y + 1 == t.Position.Y || PlayerInfo.Position.Y - 1 == t.Position.Y)
+                //    {
+                //        presentState = (int)ETATS.DEFENDRE; // si l'ennemi est à côté de nous
+                //        direction = new Point(t.Position.X - PlayerInfo.Position.X, t.Position.Y - PlayerInfo.Position.Y);
+                //    }
+                //    else // si l'ennemi n'est pas à côté
+                //    {
+                //        presentState = (int)ETATS.ATTAQUER; 
+                //    }
+                //}
+                if (t.TileType == TileContent.Resource) // 2e priorite : collecter des ressources
                 {
                     presentState = (int)ETATS.COLLECTER;
                 }
@@ -59,10 +59,10 @@ namespace LHGames.Bot
                     presentState = (int)ETATS.RECHERCHER;
                 }
             }
-            if(PlayerInfo.CarriedResources >= 1000) // initial capacity is 1000
-            {
-                presentState = (int)ETATS.RETOURNER_MAISON;
-            }
+            //if(PlayerInfo.CarriedResources >= 1000) // initial capacity is 1000
+            //{
+            //    presentState = (int)ETATS.RETOURNER_MAISON;
+            //}
             //if(PlayerInfo.TotalResources > UpgradeType.AttackPower)
             //{
             //    presentState = (int)ETATS.UPGRADE;
@@ -71,7 +71,7 @@ namespace LHGames.Bot
             switch (presentState)
             {
                 case (int)ETATS.COLLECTER:
-                    //CollectActions.Collect(map);
+                    CollectActions.Collect(map);
                     break;
                 case (int)ETATS.ATTAQUER:
                     //actions.Attaquer();
@@ -373,17 +373,21 @@ namespace LHGames.Bot
         /// <summary>
         /// Class that deals with the player collect actions
         /// </summary>
-        class CollectActions
+        public static class CollectActions
         {
-            public CollectActions(Map m)
+            public static void Collect(Map m)
             {
+
                 Point position = new Point(2000, 2000);
-                foreach (Tile t in m.GetVisibleTiles()) {
-                    if (t.TileType == TileContent.Resource) {
-                        if ( Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2)) {
+                foreach (Tile t in m.GetVisibleTiles())
+                {
+                    if (t.TileType == TileContent.Resource)
+                    {
+                        if (Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2))
+                        {
                             position = new Point(t.Position.X, t.Position.Y);
-                        } 
-                    }  
+                        }
+                    }
                 }
                 MovementActions.MoveTo(m, position);
             }
