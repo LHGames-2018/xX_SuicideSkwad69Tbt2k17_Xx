@@ -32,8 +32,6 @@ namespace LHGames.Bot
         {
             MovementActions movement = new MovementActions();
             PlayerActions actions = new PlayerActions(map);
-            CollectActions collection = new CollectActions();
-
             Point direction = new Point(0, 0);
 
             // Scanning the map
@@ -65,7 +63,7 @@ namespace LHGames.Bot
             switch (presentState)
             {
                 case (int)ETATS.COLLECTER:
-                    //collection.Collecter();
+                    //CollectActions.Collect(map);
                     break;
                 case (int)ETATS.ATTAQUER:
                     //actions.Attaquer(visiblePlayers);
