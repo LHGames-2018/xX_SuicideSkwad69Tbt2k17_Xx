@@ -32,7 +32,7 @@ namespace LHGames.Bot
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
             MovementActions movement = new MovementActions();
-            PlayerActions actions = new PlayerActions();
+            PlayerActions actions = new PlayerActions(map);
             CollectActions collection = new CollectActions();
 
             // TODO: Implement your AI here.
@@ -131,13 +131,27 @@ namespace LHGames.Bot
                 }
             }
 
-            public PlayerActions()
+            private Map gameMap;
+
+            public Map GameMap
             {
-                Movement = new MovementActions();
+                get { return gameMap; }
+                set { gameMap = value; }
             }
 
-            //Find the distance to nearest enemy
-            public void MeleeAttack(IEnumerable<IPlayer> visiblePlayers)
+
+            public PlayerActions(Map map)
+            {
+                Movement = new MovementActions();
+                GameMap = map;
+            }
+
+            
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="visiblePlayers"></param>
+            public void MoveToEnemyAndAttack(IEnumerable<IPlayer> visiblePlayers)
             {
                 Point target = new Point(0, 0);
                 double distance = int.MaxValue;
@@ -158,7 +172,55 @@ namespace LHGames.Bot
                 else
                 {
                     Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
-                    AIHelper.CreateMeleeAttackAction(direction);
+                    Attack(direction);
+                }
+            }
+
+            /// <summary>
+            /// Attack in the specified direction
+            /// </summary>
+            /// <param name="direction"></param>
+            public void Attack(Point direction)
+            {
+                AIHelper.CreateMeleeAttackAction(direction);
+            }
+
+            public void Defend()
+            {
+
+            }
+
+            /// <summary>
+            /// Search a random position, if it's a wall, break it. Else move to the direction
+            /// </summary>
+            public void SearchNewPosition()
+            {
+                Random generator = new Random();
+                int negX = 1;
+                int negY = 1;
+                if (generator.Next(1) > 0)
+                {
+                    negX *= -1;
+                }
+                if (generator.Next(1) > 0)
+                {
+                    negY *= -1;
+                }
+                Point direction = new Point(negX * generator.Next(1), negY * generator.Next(1));
+                if (GameMap.GetTileAt(direction.X, direction.Y) == TileContent.Wall)
+                {
+                    if (GameMap.WallsAreBreakable)
+                    {
+                        Attack(direction);
+                    }
+                    else
+                    {
+                        SearchNewPosition();
+                    }
+                }
+                else
+                {
+                    //Movement.Deplacer(direction);
                 }
             }
         }
