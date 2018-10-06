@@ -63,10 +63,11 @@ namespace LHGames.Bot
             //{
             //    presentState = (int)ETATS.RETOURNER_MAISON;
             //}
-            //if(PlayerInfo.TotalResources > UpgradeType.AttackPower)
-            //{
-            //    presentState = (int)ETATS.UPGRADE;
-            //}
+            int upgrade = (int)UpgradeType.AttackPower;
+            if (PlayerInfo.TotalResources > 10000)
+            {
+                presentState = (int)ETATS.UPGRADE;
+            }
 
             string action = "";
 
@@ -82,7 +83,7 @@ namespace LHGames.Bot
                     //actions.Defendre(direction);
                     break;
                 case (int)ETATS.UPGRADE:
-                    //actions.Upgrade();
+                    actions.Upgrade(upgrade);
                     break;
                 case (int)ETATS.VOLER:
                     //actions.Steal();
@@ -389,6 +390,21 @@ namespace LHGames.Bot
                 {
                     //Movement.Deplacer(direction);
                 }
+            }
+
+            public string Upgrade(int upgradeType)
+            {
+                if (PlayerInfo.Position != PlayerInfo.HouseLocation)
+                {
+
+                    return MovementActions.MoveTo(GameMap, PlayerInfo.HouseLocation - PlayerInfo.Position);
+                }
+                else
+                {
+                    return AIHelper.CreateUpgradeAction((UpgradeType)upgradeType);
+                }
+
+
             }
         }
 
