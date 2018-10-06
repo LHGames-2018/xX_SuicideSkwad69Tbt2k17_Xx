@@ -83,7 +83,7 @@ namespace LHGames.Bot
                     //actions.Defendre(direction);
                     break;
                 case (int)ETATS.UPGRADE:
-                    actions.Upgrade(upgrade);
+                    action = actions.Upgrade(upgrade);
                     break;
                 case (int)ETATS.VOLER:
                     //actions.Steal();
