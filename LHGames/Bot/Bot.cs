@@ -63,7 +63,161 @@ namespace LHGames.Bot
             //{
             //    presentState = (int)ETATS.RETOURNER_MAISON;
             //}
-            int upgrade = (int)UpgradeType.AttackPower;
+
+            int upgrade;
+            int upgradeStep = 1;
+            switch (upgradeStep){
+                case(1): {
+                        if (PlayerInfo.TotalResources > 10000) {
+                            upgrade = (int)UpgradeType.CarryingCapacity;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case(2): {
+                        if (PlayerInfo.TotalResources > 15000)
+                        {
+                            upgrade = (int)UpgradeType.CarryingCapacity;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (3):
+                    {
+                        if (PlayerInfo.TotalResources > 10000)
+                        {
+                            upgrade = (int)UpgradeType.CollectingSpeed;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (4):
+                    {
+                        if (PlayerInfo.TotalResources > 15000)
+                        {
+                            upgrade = (int)UpgradeType.CollectingSpeed;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (5):
+                    {
+                        if (PlayerInfo.TotalResources > 25000)
+                        {
+                            upgrade = (int)UpgradeType.CarryingCapacity;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (6):
+                    {
+                        if (PlayerInfo.TotalResources > 25000)
+                        {
+                            upgrade = (int)UpgradeType.CollectingSpeed;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (7):
+                    {
+                        if (PlayerInfo.TotalResources > 10000)
+                        {
+                            upgrade = (int)UpgradeType.MaximumHealth;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (8):
+                    {
+                        if (PlayerInfo.TotalResources > 15000)
+                        {
+                            upgrade = (int)UpgradeType.MaximumHealth;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (9):
+                    {
+                        if (PlayerInfo.TotalResources > 25000)
+                        {
+                            upgrade = (int)UpgradeType.MaximumHealth;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (10):
+                    {
+                        if (PlayerInfo.TotalResources > 10000)
+                        {
+                            upgrade = (int)UpgradeType.AttackPower;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (11):
+                    {
+                        if (PlayerInfo.TotalResources > 10000)
+                        {
+                            upgrade = (int)UpgradeType.Defence;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (12):
+                    {
+                        if (PlayerInfo.TotalResources > 15000)
+                        {
+                            upgrade = (int)UpgradeType.AttackPower;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (13):
+                    {
+                        if (PlayerInfo.TotalResources > 15000)
+                        {
+                            upgrade = (int)UpgradeType.Defence;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (14):
+                    {
+                        if (PlayerInfo.TotalResources > 25000)
+                        {
+                            upgrade = (int)UpgradeType.AttackPower;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+                case (15):
+                    {
+                        if (PlayerInfo.TotalResources > 25000)
+                        {
+                            upgrade = (int)UpgradeType.Defence;
+                            presentState = (int)ETATS.UPGRADE;
+                            upgradeStep++;
+                        }
+                        break;
+                    }
+            }
+
+
+            upgrade = (int)UpgradeType.AttackPower;
             if (PlayerInfo.TotalResources > 10000)
             {
                 presentState = (int)ETATS.UPGRADE;
