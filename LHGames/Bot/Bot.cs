@@ -28,6 +28,10 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
+            MovementActions movement = new MovementActions();
+            PlayerActions actions = new PlayerActions();
+            CollectActions collection = new CollectActions();
+
             // TODO: Implement your AI here.
             if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
             {
@@ -44,6 +48,44 @@ namespace LHGames.Bot
         /// </summary>
         internal void AfterTurn()
         {
+        }
+
+        /// <summary>
+        /// Class used to define the path to use
+        /// </summary>
+        class MovementActions
+        {
+            public MovementActions()
+            {
+
+            }
+
+            public void Deplacer(int x, int y)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Class that deals with the player actions
+        /// </summary>
+        class PlayerActions
+        {
+            public PlayerActions()
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Class that deals with the player collect actions
+        /// </summary>
+        class CollectActions
+        {
+            public CollectActions()
+            {
+
+            }
         }
     }
 }
