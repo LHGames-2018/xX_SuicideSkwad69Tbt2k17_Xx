@@ -33,7 +33,7 @@ namespace LHGames.Bot
         {
             MovementActions movement = new MovementActions();
             PlayerActions actions = new PlayerActions(map);
-            CollectActions collection = new CollectActions();
+            Point direction = new Point(0, 0);
 
             // Scanning the map
             foreach(Tile t in map.GetVisibleTiles())
@@ -44,6 +44,7 @@ namespace LHGames.Bot
                        PlayerInfo.Position.Y + 1 == t.Position.Y || PlayerInfo.Position.Y - 1 == t.Position.Y)
                     {
                         presentState = (int)ETATS.DEFENDRE; // si l'ennemi est à côté de nous
+                        direction = new Point(t.Position.X - PlayerInfo.Position.X, t.Position.Y - PlayerInfo.Position.Y);
                     }
                     else // si l'ennemi n'est pas à côté
                     {
@@ -63,13 +64,13 @@ namespace LHGames.Bot
             switch (presentState)
             {
                 case (int)ETATS.COLLECTER:
-                    //collection.Collecter();
+                    //CollectActions.Collect(map);
                     break;
                 case (int)ETATS.ATTAQUER:
-                    //actions.Attaquer();
+                    //actions.Attaquer(visiblePlayers);
                     break;
                 case (int)ETATS.DEFENDRE:
-                    //actions.Defendre();
+                    //actions.Defendre(visiblePlayers, direction);
                     break;
                 case (int)ETATS.UPGRADE:
                     //actions.Upgrade();
