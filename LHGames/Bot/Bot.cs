@@ -396,7 +396,6 @@ namespace LHGames.Bot
         {
             public static void Collect(Map m)
             {
-
                 Point position = new Point(2000, 2000);
                 foreach (Tile t in m.GetVisibleTiles())
                 {
