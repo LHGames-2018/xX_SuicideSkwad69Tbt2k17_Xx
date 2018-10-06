@@ -60,9 +60,29 @@ namespace LHGames.Bot
 
             }
 
-            public void Deplacer(int x, int y)
+            /// <summary>
+            /// When called, the player will move in a specific direction
+            /// Input must be between [-1, -1] and [1, 1], and can only have 1 parameter != 0
+            /// </summary>
+            /// <param name="point">Move in the x axis. Left = [-1, 0], Right = [1, 0]
+            ///                     Move in the y axis. Top = [0, -1], Down = [0, 1] </param>
+            public void Deplacer(Point point)
             {
-
+                if(point.X != 0 ^ point.Y != 0)
+                {
+                    if(point.X != 0) // move in x axis
+                    {
+                        AIHelper.CreateMoveAction(new Point(point.X, 0));
+                    }
+                    else // move in y axis
+                    {
+                        AIHelper.CreateMoveAction(new Point(0, point.Y));
+                    }
+                }
+                else // Called if the user sent inconsistent entrie values
+                {
+                    AIHelper.CreateMoveAction(new Point(0, 0)); // Won't move
+                }
             }
         }
 
