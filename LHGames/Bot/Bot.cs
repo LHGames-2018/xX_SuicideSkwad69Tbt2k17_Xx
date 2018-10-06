@@ -7,8 +7,11 @@ namespace LHGames.Bot
 {
     internal class Bot
     {
+<<<<<<< HEAD
         enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
         int presentState = (int)ETATS.COLLECTER;
+=======
+>>>>>>> 4474efcaae4cb981cf2f633e947233735a378b85
         static IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
 
@@ -32,6 +35,7 @@ namespace LHGames.Bot
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
             MovementActions movement = new MovementActions();
+<<<<<<< HEAD
             PlayerActions actions = new PlayerActions(map);
             Point direction = new Point(0, 0);
 
@@ -82,6 +86,10 @@ namespace LHGames.Bot
                     //actions.Rechercher(); // plus rien sur la map visible
                     break;
             }
+=======
+            PlayerActions actions = new PlayerActions();
+            CollectActions collection = new CollectActions(map);
+>>>>>>> 4474efcaae4cb981cf2f633e947233735a378b85
 
             if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
             {
@@ -208,6 +216,7 @@ namespace LHGames.Bot
             private MovementActions movement;
 
             public MovementActions Movement
+<<<<<<< HEAD
             {
                 get => movement;
                 set
@@ -236,6 +245,23 @@ namespace LHGames.Bot
             /// </summary>
             /// <param name="visiblePlayers"></param>
             public void MoveToEnemyAndAttack(IEnumerable<IPlayer> visiblePlayers)
+=======
+            {
+                get => movement;
+                set
+                {
+                    movement = value;
+                }
+            }
+
+            public PlayerActions()
+            {
+                Movement = new MovementActions();
+            }
+
+            //Find the distance to nearest enemy
+            public void MeleeAttack(IEnumerable<IPlayer> visiblePlayers)
+>>>>>>> 4474efcaae4cb981cf2f633e947233735a378b85
             {
                 Point target = new Point(0, 0);
                 double distance = int.MaxValue;
@@ -256,6 +282,7 @@ namespace LHGames.Bot
                 else
                 {
                     Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
+<<<<<<< HEAD
                     Defend(visiblePlayers, direction);
                 }
             }
@@ -321,6 +348,9 @@ namespace LHGames.Bot
                 else
                 {
                     //Movement.Deplacer(direction);
+=======
+                    AIHelper.CreateMeleeAttackAction(direction);
+>>>>>>> 4474efcaae4cb981cf2f633e947233735a378b85
                 }
             }
         }
@@ -330,8 +360,20 @@ namespace LHGames.Bot
         /// </summary>
         class CollectActions
         {
-            public CollectActions()
+            public CollectActions(Map m)
             {
+<<<<<<< HEAD
+=======
+                Point position = new Point(2000, 2000);
+                foreach (Tile t in m.GetVisibleTiles()) {
+                    if (t.TileType == TileContent.Resource) {
+                        if ( Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2)) {
+                            position = new Point(t.Position.X, t.Position.Y);
+                        } 
+                    }  
+                }
+                MovementActions.MoveTo(m, position);
+>>>>>>> 4474efcaae4cb981cf2f633e947233735a378b85
             }
         }
     }
