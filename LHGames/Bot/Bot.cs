@@ -66,10 +66,10 @@ namespace LHGames.Bot
                     //CollectActions.Collect(map);
                     break;
                 case (int)ETATS.ATTAQUER:
-                    //actions.Attaquer(visiblePlayers);
+                    //actions.Attaquer();
                     break;
                 case (int)ETATS.DEFENDRE:
-                    //actions.Defendre(visiblePlayers, direction);
+                    //actions.Defendre(direction);
                     break;
                 case (int)ETATS.UPGRADE:
                     //actions.Upgrade();
