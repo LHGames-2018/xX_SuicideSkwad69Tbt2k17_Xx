@@ -34,6 +34,8 @@ namespace LHGames.Bot
             PlayerActions actions = new PlayerActions(map);
             Point direction = new Point(0, 0);
 
+            presentState = (int)ETATS.RECHERCHER;
+
             // Scanning the map
             foreach(Tile t in map.GetVisibleTiles())
             {
@@ -88,7 +90,7 @@ namespace LHGames.Bot
                     //actions.Steal();
                     break;
                 case (int)ETATS.RECHERCHER:
-                    //actions.Rechercher(); // plus rien sur la map visible
+                    action = actions.Rechercher(); // plus rien sur la map visible
                     break;
                 case (int)ETATS.RETOURNER_MAISON:
                     //CollectActions.RetournerMaison(map);
@@ -355,6 +357,11 @@ namespace LHGames.Bot
                 {
                     Attack(direction);
                 }
+            }
+
+            public string Rechercher()
+            {
+                return MovementActions.MoveTo(GameMap, PlayerInfo.HouseLocation - PlayerInfo.Position);
             }
 
             /// <summary>
