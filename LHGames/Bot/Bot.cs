@@ -6,9 +6,8 @@ namespace LHGames.Bot
 {
     internal class Bot
     {
-        enum ETATS { COLLECTER, DEPLACER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
+        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
         int presentState = (int)ETATS.COLLECTER;
-        int previousState;
         static IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
 
@@ -35,10 +34,10 @@ namespace LHGames.Bot
             PlayerActions actions = new PlayerActions(map);
             CollectActions collection = new CollectActions();
 
-            // TODO: Implement your AI here.
+            // Scanning the map
             foreach(Tile t in map.GetVisibleTiles())
             {
-                if(t.TileType == TileContent.Player)
+                if(t.TileType == TileContent.Player) // 1e priorite : attaquer et defendre
                 {
                     if(PlayerInfo.Position.X + 1 == t.Position.X || PlayerInfo.Position.X - 1 == t.Position.X ||
                        PlayerInfo.Position.Y + 1 == t.Position.Y || PlayerInfo.Position.Y - 1 == t.Position.Y)
@@ -50,28 +49,20 @@ namespace LHGames.Bot
                         presentState = (int)ETATS.ATTAQUER; 
                     }
                 }
-                else if (t.TileType == TileContent.Resource)
+                else if (t.TileType == TileContent.Resource) // 2e priorite : collecter des ressources
                 {
                     presentState = (int)ETATS.COLLECTER;
                 }
-                else // Si on ne voit rien de pertinent
+                else // Si on ne voit rien de pertinent // derniere priorite : rechercher des ressources
                 {
                     presentState = (int)ETATS.RECHERCHER;
                 }
-            }
-
-            if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
-            {
-                _currentDirection *= -1;
             }
 
             switch (presentState)
             {
                 case (int)ETATS.COLLECTER:
                     //collection.Collecter();
-                    break;
-                case (int)ETATS.DEPLACER:
-                    //movement.Deplacer();
                     break;
                 case (int)ETATS.ATTAQUER:
                     //actions.Attaquer();
@@ -85,6 +76,14 @@ namespace LHGames.Bot
                 case (int)ETATS.VOLER:
                     //actions.Steal();
                     break;
+                case (int)ETATS.RECHERCHER:
+                    //actions.Rechercher(); // plus rien sur la map visible
+                    break;
+            }
+
+            if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
+            {
+                _currentDirection *= -1;
             }
 
             var data = StorageHelper.Read<TestClass>("Test");
