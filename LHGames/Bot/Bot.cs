@@ -76,6 +76,9 @@ namespace LHGames.Bot
                 case (int)ETATS.VOLER:
                     //actions.Steal();
                     break;
+                case (int)ETATS.RECHERCHER:
+                    //actions.Rechercher();
+                    break;
             }
 
             if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
