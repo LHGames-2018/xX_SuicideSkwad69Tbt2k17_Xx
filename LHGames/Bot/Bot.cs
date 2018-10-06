@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LHGames.Helper;
+using System.Linq;
 
 namespace LHGames.Bot
 {
@@ -170,7 +171,7 @@ namespace LHGames.Bot
                 else
                 {
                     Point direction = new Point(target.X - PlayerInfo.Position.X, target.Y - PlayerInfo.Position.Y);
-                    Attack(direction);
+                    Defend(visiblePlayers, direction);
                 }
             }
 
@@ -181,11 +182,27 @@ namespace LHGames.Bot
             public void Attack(Point direction)
             {
                 AIHelper.CreateMeleeAttackAction(direction);
+
             }
 
-            public void Defend()
+            /// <summary>
+            /// Defend from enemies
+            /// </summary>
+            /// <param name="direction"></param>
+            public void Defend(Point direction = null)
             {
-
+                double criticalHp = PlayerInfo.MaxHealth * 0.3;
+                if (PlayerInfo.Health <= criticalHp)
+                {
+                    if (PlayerInfo.CarriedItems.Count(x => x == PurchasableItem.HealthPotion) > 0)
+                    {
+                        AIHelper.CreateHealAction();
+                    }
+                }
+                else
+                {
+                    Attack(direction);
+                }
             }
 
             /// <summary>
