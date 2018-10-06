@@ -77,7 +77,7 @@ namespace LHGames.Bot
                     //actions.Steal();
                     break;
                 case (int)ETATS.RECHERCHER:
-                    //actions.Rechercher();
+                    //actions.Rechercher(); // plus rien sur la map visible
                     break;
             }
 
