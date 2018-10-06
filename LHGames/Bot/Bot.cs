@@ -34,10 +34,10 @@ namespace LHGames.Bot
             PlayerActions actions = new PlayerActions();
             CollectActions collection = new CollectActions();
 
-            // TODO: Implement your AI here.
+            // Scanning the map
             foreach(Tile t in map.GetVisibleTiles())
             {
-                if(t.TileType == TileContent.Player)
+                if(t.TileType == TileContent.Player) // 1e priorite : attaquer et defendre
                 {
                     if(PlayerInfo.Position.X + 1 == t.Position.X || PlayerInfo.Position.X - 1 == t.Position.X ||
                        PlayerInfo.Position.Y + 1 == t.Position.Y || PlayerInfo.Position.Y - 1 == t.Position.Y)
@@ -49,11 +49,11 @@ namespace LHGames.Bot
                         presentState = (int)ETATS.ATTAQUER; 
                     }
                 }
-                else if (t.TileType == TileContent.Resource)
+                else if (t.TileType == TileContent.Resource) // 2e priorite : collecter des ressources
                 {
                     presentState = (int)ETATS.COLLECTER;
                 }
-                else // Si on ne voit rien de pertinent
+                else // Si on ne voit rien de pertinent // derniere priorite : rechercher des ressources
                 {
                     presentState = (int)ETATS.RECHERCHER;
                 }
