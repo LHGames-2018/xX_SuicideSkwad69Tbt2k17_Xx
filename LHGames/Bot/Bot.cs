@@ -6,9 +6,8 @@ namespace LHGames.Bot
 {
     internal class Bot
     {
-        enum ETATS { COLLECTER, DEPLACER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
+        enum ETATS { COLLECTER, ATTAQUER, DEFENDRE, UPGRADE, VOLER, RECHERCHER };
         int presentState = (int)ETATS.COLLECTER;
-        int previousState;
         static IPlayer PlayerInfo { get; set; }
         private int _currentDirection = 1;
 
@@ -64,9 +63,6 @@ namespace LHGames.Bot
             {
                 case (int)ETATS.COLLECTER:
                     //collection.Collecter();
-                    break;
-                case (int)ETATS.DEPLACER:
-                    //movement.Deplacer();
                     break;
                 case (int)ETATS.ATTAQUER:
                     //actions.Attaquer();
