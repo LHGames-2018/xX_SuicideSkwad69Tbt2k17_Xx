@@ -61,12 +61,27 @@ namespace LHGames.Bot
             }
 
             /// <summary>
+            /// Used by the other classes to 
+            /// </summary>
+            /// <param name="point"></param>
+            public MoveTo(Point point)
+            {
+
+            }
+
+
+            private Point[] FindPath()
+            {
+
+            }
+
+            /// <summary>
             /// When called, the player will move in a specific direction
             /// Input must be between [-1, -1] and [1, 1], and can only have 1 parameter != 0
             /// </summary>
             /// <param name="point">Move in the x axis. Left = [-1, 0], Right = [1, 0]
             ///                     Move in the y axis. Top = [0, -1], Down = [0, 1] </param>
-            public void Deplacer(Point point)
+            private void Move(Point point)
             {
                 if(point.X != 0 ^ point.Y != 0)
                 {
