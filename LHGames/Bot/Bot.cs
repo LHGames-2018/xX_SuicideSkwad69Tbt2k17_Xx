@@ -145,7 +145,7 @@ namespace LHGames.Bot
                      moveRight = false,
                      moveUp = false,
                      moveDown = false;
-
+                return AIHelper.CreateMoveAction(new Point(-1, 0));
                 int nbMovesX = point.X;
                 int nbMovesY = point.Y;
 
