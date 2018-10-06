@@ -214,80 +214,187 @@ namespace LHGames.Bot
                 int nbRandom = random.Next() % 4;
                 if (nbRandom == 0)
                 {
-                    if (moveLeft)
+                    #region option1
+                    if(random.Next() % 2 == 0)
                     {
-                        return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        if (moveLeft)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
+                        else if (moveRight)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
+                        else if (moveUp)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
                     }
-                    else if (moveRight)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(1, 0));
-                    }
-                    else if (moveUp)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(0, -1));
-                    }
+                    #endregion
+                    #region option2
                     else
                     {
-                        return AIHelper.CreateMoveAction(new Point(0, 1));
+                        if (moveUp)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
+                        else if (moveDown)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
+                        else if (moveLeft)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
+                        
                     }
+                    #endregion             
                 }
                 else if(nbRandom == 1)
                 {
-                    if(moveDown)
+                    #region option1
+                    if (random.Next() % 2 == 0)
                     {
-                        return AIHelper.CreateMoveAction(new Point(0, 1));
+                        if (moveDown)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
+                        else if (moveLeft)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
+                        else if (moveRight)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
                     }
-                    else if (moveLeft)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(-1, 0));
-                    }
-                    else if (moveRight)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(1, 0));
-                    }
+                    #endregion
+                    #region option2
                     else
                     {
-                        return AIHelper.CreateMoveAction(new Point(0, -1));
+                        if (moveRight)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
+                        else if (moveUp)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
+                        else if (moveDown)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
                     }
+                    #endregion
                 }
                 else if (nbRandom == 2)
                 {
-                    if(moveUp)
+                    #region option1
+                    if (random.Next() % 2 == 0)
                     {
-                        return AIHelper.CreateMoveAction(new Point(0, -1));
+                        if (moveUp)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
+                        else if (moveDown)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
+                        else if (moveLeft)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
                     }
-                    else if (moveDown)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(0, 1));
-                    }
-                    else if (moveLeft)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(-1, 0));
-                    }
+                    #endregion
+                    #region option2
                     else
                     {
-                        return AIHelper.CreateMoveAction(new Point(1, 0));
-                    } 
+                        if (moveLeft)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
+                        else if (moveRight)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
+                        else if (moveUp)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
+                    }
+                    #endregion
                 }
                 else
                 {
-                    if(moveRight)
+                    #region option1
+                    if (random.Next() % 2 == 0)
                     {
-                        return AIHelper.CreateMoveAction(new Point(1, 0));
+                        if (moveDown)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
+                        else if (moveLeft)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
+                        else if (moveRight)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
+                        
                     }
-                    else if (moveUp)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(0, -1));
-                    }
-                    else if (moveDown)
-                    {
-                        return AIHelper.CreateMoveAction(new Point(0, 1));
-                    }
+                    #endregion
+                    #region option2
                     else
                     {
-                        return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        if (moveRight)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(1, 0));
+                        }
+                        else if (moveUp)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, -1));
+                        }
+                        else if (moveDown)
+                        {
+                            return AIHelper.CreateMoveAction(new Point(0, 1));
+                        }
+                        else
+                        {
+                            return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        }
                     }
+
                     
+                    #endregion
                 }
             }
         }
