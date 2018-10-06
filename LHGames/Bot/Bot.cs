@@ -176,6 +176,25 @@ namespace LHGames.Bot
                         AIHelper.CreateMoveAction(new Point(0, 1));
                     }
                 }
+                else
+                {
+                    if (moveUp)
+                    {
+                        AIHelper.CreateMoveAction(new Point(0, -1));
+                    }
+                    else if (moveDown)
+                    {
+                        AIHelper.CreateMoveAction(new Point(0, 1));
+                    }
+                    else if (moveLeft)
+                    {
+                        AIHelper.CreateMoveAction(new Point(-1, 0));
+                    }
+                    else if (moveRight)
+                    {
+                        AIHelper.CreateMoveAction(new Point(1, 0));
+                    }
+                }
             }
 
             /// <summary>
