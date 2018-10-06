@@ -54,10 +54,10 @@ namespace LHGames.Bot
                 {
                     presentState = (int)ETATS.COLLECTER;
                 }
-                else // Si on ne voit rien de pertinent // derniere priorite : rechercher des ressources
-                {
-                    presentState = (int)ETATS.RECHERCHER;
-                }
+                //else // Si on ne voit rien de pertinent // derniere priorite : rechercher des ressources
+                //{
+                //    presentState = (int)ETATS.RECHERCHER;
+                //}
             }
             //if(PlayerInfo.CarriedResources >= 1000) // initial capacity is 1000
             //{
@@ -68,10 +68,12 @@ namespace LHGames.Bot
             //    presentState = (int)ETATS.UPGRADE;
             //}
 
+            string action = "";
+
             switch (presentState)
             {
                 case (int)ETATS.COLLECTER:
-                    CollectActions.MoveToRock(map);
+                    action = CollectActions.MoveToRock(map);
                     break;
                 case (int)ETATS.ATTAQUER:
                     //actions.Attaquer();
@@ -93,14 +95,15 @@ namespace LHGames.Bot
                     break;
             }
 
-            if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
-            {
-                _currentDirection *= -1;
-            }
+            //if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
+            //{
+            //    _currentDirection *= -1;
+            //}
 
-            var data = StorageHelper.Read<TestClass>("Test");
-            Console.WriteLine(data?.Test);
-            return AIHelper.CreateMoveAction(new Point(_currentDirection, 0));
+            //var data = StorageHelper.Read<TestClass>("Test");
+            //Console.WriteLine(data?.Test);
+            //return AIHelper.CreateMoveAction(new Point(_currentDirection, 0));
+            return action;
         }
 
         /// <summary>
@@ -127,21 +130,21 @@ namespace LHGames.Bot
             /// ie: the player wan't to move to a point positioned 1 right, 3 up, MoveTo(new Point(player.X + 1, Player.Y - 3));
             /// </summary>
             /// <param name="point">The point where the player wants to end up</param>
-            public static void MoveTo(Map map, Point point)
+            public static string MoveTo(Map map, Point point)
             {
                 //List<Point> path = FindPath(map, point);
-                FindEasyPath(map, point);
+                return FindEasyPath(map, point);
             }
 
-            private static void FindEasyPath(Map map, Point point)
+            private static string FindEasyPath(Map map, Point point)
             {
                 bool moveLeft = false,
                      moveRight = false,
                      moveUp = false,
                      moveDown = false;
 
-                int nbMovesX = point.X - PlayerInfo.Position.X;
-                int nbMovesY = point.Y - PlayerInfo.Position.Y;
+                int nbMovesX = point.X;
+                int nbMovesY = point.Y;
 
                 if(nbMovesX > 0)
                 {
@@ -165,38 +168,38 @@ namespace LHGames.Bot
                 {
                     if (moveLeft)
                     {
-                        AIHelper.CreateMoveAction(new Point(-1, 0));
+                       return AIHelper.CreateMoveAction(new Point(-1, 0));
                     }
                     else if(moveRight)
                     {
-                        AIHelper.CreateMoveAction(new Point(1, 0));
+                       return AIHelper.CreateMoveAction(new Point(1, 0));
                     }
                     else if(moveUp)
                     {
-                        AIHelper.CreateMoveAction(new Point(0, -1));
+                        return AIHelper.CreateMoveAction(new Point(0, -1));
                     }
-                    else if (moveDown)
+                    else //(moveDown)
                     {
-                        AIHelper.CreateMoveAction(new Point(0, 1));
+                        return AIHelper.CreateMoveAction(new Point(0, 1));
                     }
                 }
                 else
                 {
                     if (moveUp)
                     {
-                        AIHelper.CreateMoveAction(new Point(0, -1));
+                        return AIHelper.CreateMoveAction(new Point(0, -1));
                     }
                     else if (moveDown)
                     {
-                        AIHelper.CreateMoveAction(new Point(0, 1));
+                        return AIHelper.CreateMoveAction(new Point(0, 1));
                     }
                     else if (moveLeft)
                     {
-                        AIHelper.CreateMoveAction(new Point(-1, 0));
+                        return AIHelper.CreateMoveAction(new Point(-1, 0));
                     }
-                    else if (moveRight)
+                    else //(moveRight)
                     {
-                        AIHelper.CreateMoveAction(new Point(1, 0));
+                        return AIHelper.CreateMoveAction(new Point(1, 0));
                     }
                 }
             }
@@ -259,22 +262,22 @@ namespace LHGames.Bot
             /// </summary>
             /// <param name="point">Move in the x axis. Left = [-1, 0], Right = [1, 0]
             ///                     Move in the y axis. Top = [0, -1], Down = [0, 1] </param>
-            private static void Move(Point point)
+            private static string Move(Point point)
             {
                 if (point.X != 0 ^ point.Y != 0)
                 {
                     if (point.X != 0) // move in x axis
                     {
-                        AIHelper.CreateMoveAction(new Point(point.X, 0));
+                        return AIHelper.CreateMoveAction(new Point(point.X, 0));
                     }
                     else // move in y axis
                     {
-                        AIHelper.CreateMoveAction(new Point(0, point.Y));
+                        return AIHelper.CreateMoveAction(new Point(0, point.Y));
                     }
                 }
                 else // Called if the user sent inconsistent entrie values
                 {
-                    AIHelper.CreateMoveAction(new Point(0, 0)); // Won't move
+                    return AIHelper.CreateMoveAction(new Point(0, 0)); // Won't move
                 }
             }
         }
@@ -397,20 +400,21 @@ namespace LHGames.Bot
             /// <summary>
             /// Move to rock and if close enough, collect
             /// </summary>
-            public static void MoveToRock(Map GameMap)
-            {
+            public static string MoveToRock(Map map)
+            { 
                 Point position = new Point(2000, 2000);
                 if (PlayerInfo.CarriedResources == PlayerInfo.CarryingCapacity)
                 {
-                    MovementActions.MoveTo(GameMap, PlayerInfo.HouseLocation);
+                    return MovementActions.MoveTo(map, PlayerInfo.HouseLocation);
                 }
                 else
                 {
-                    foreach (Tile t in GameMap.GetVisibleTiles())
+                    foreach (Tile t in map.GetVisibleTiles())
                     {
                         if (t.TileType == TileContent.Resource)
                         {
-                            if (Math.Pow(t.Position.X, 2) + Math.Pow(t.Position.Y, 2) < Math.Pow(position.X, 2) + Math.Pow(position.Y, 2))
+                            if (Math.Pow(t.Position.X - PlayerInfo.Position.X, 2) + Math.Pow(t.Position.Y - PlayerInfo.Position.Y, 2)
+                                < Math.Pow(position.X - PlayerInfo.Position.X, 2) + Math.Pow(position.Y - PlayerInfo.Position.Y, 2))
                             {
                                 position = new Point(t.Position.X, t.Position.Y);
                             }
@@ -419,11 +423,27 @@ namespace LHGames.Bot
                     double distance = Math.Sqrt(Math.Pow((position.X - PlayerInfo.Position.X), 2) + (Math.Pow((position.Y - PlayerInfo.Position.Y), 2)));
                     if (distance > 1)
                     {
-                        MovementActions.MoveTo(GameMap, position);
+                        if(map.GetTileAt(PlayerInfo.Position.X + 1, PlayerInfo.Position.Y) == TileContent.Wall)
+                        {
+                            return AIHelper.CreateMeleeAttackAction(new Point(1, 0));
+                        }
+                        else if (map.GetTileAt(PlayerInfo.Position.X - 1, PlayerInfo.Position.Y) == TileContent.Wall)
+                        {
+                            return AIHelper.CreateMeleeAttackAction(new Point(-1, 0));
+                        }
+                        else if (map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y + 1) == TileContent.Wall)
+                        {
+                            return AIHelper.CreateMeleeAttackAction(new Point(0, 1));
+                        }
+                        else if(map.GetTileAt(PlayerInfo.Position.X, PlayerInfo.Position.Y - 1) == TileContent.Wall)
+                        {
+                            return AIHelper.CreateMeleeAttackAction(new Point(0, -1));
+                        }
+                        return MovementActions.MoveTo(map, position - PlayerInfo.Position);
                     }
                     else
                     {
-                        AIHelper.CreateCollectAction(position - PlayerInfo.Position);
+                        return AIHelper.CreateCollectAction(position - PlayerInfo.Position);
                     }
                 }
             }
