@@ -63,6 +63,10 @@ namespace LHGames.Bot
             {
                 presentState = (int)ETATS.RETOURNER_MAISON;
             }
+            //if(PlayerInfo.TotalResources > UpgradeType.AttackPower)
+            //{
+            //    presentState = (int)ETATS.UPGRADE;
+            //}
 
             switch (presentState)
             {
