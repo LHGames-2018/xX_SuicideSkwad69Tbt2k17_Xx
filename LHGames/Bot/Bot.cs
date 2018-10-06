@@ -60,11 +60,6 @@ namespace LHGames.Bot
                 }
             }
 
-            if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
-            {
-                _currentDirection *= -1;
-            }
-
             switch (presentState)
             {
                 case (int)ETATS.COLLECTER:
@@ -85,6 +80,11 @@ namespace LHGames.Bot
                 case (int)ETATS.VOLER:
                     //actions.Steal();
                     break;
+            }
+
+            if (map.GetTileAt(PlayerInfo.Position.X + _currentDirection, PlayerInfo.Position.Y) == TileContent.Wall)
+            {
+                _currentDirection *= -1;
             }
 
             var data = StorageHelper.Read<TestClass>("Test");
