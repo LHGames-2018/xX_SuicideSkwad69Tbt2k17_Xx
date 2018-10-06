@@ -71,7 +71,7 @@ namespace LHGames.Bot
             switch (presentState)
             {
                 case (int)ETATS.COLLECTER:
-                    CollectActions.Collect(map);
+                    CollectActions.MoveToRock(map);
                     break;
                 case (int)ETATS.ATTAQUER:
                     //actions.Attaquer();
@@ -394,24 +394,10 @@ namespace LHGames.Bot
         /// </summary>
         public static class CollectActions
         {
-            private Map gameMap;
-
-            public Map GameMap
-            {
-                get { return gameMap; }
-                set { gameMap = value; }
-            }
-
-
-            public CollectActions(Map m)
-            {
-                GameMap = m;
-            }
-
             /// <summary>
             /// Move to rock and if close enough, collect
             /// </summary>
-            public void MoveToRock()
+            public static void MoveToRock(Map GameMap)
             {
                 Point position = new Point(2000, 2000);
                 if (PlayerInfo.CarriedResources == PlayerInfo.CarryingCapacity)
